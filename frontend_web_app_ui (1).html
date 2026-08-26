@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>InfraFix Pro | UIN Ar-Raniry Banda Aceh</title>
+
+  <!-- Tailwind CSS & CDN Libraries -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  
+  <!-- Fonts Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "uin-green": "#006837",
+            "uin-green-dark": "#004825",
+            "uin-green-light": "#008a49",
+            "uin-gold": "#D4AF37",
+            "uin-gold-dark": "#997A15",
+            "uin-gold-light": "#FFF3B3",
+            "uin-yellow": "#FFC72C",
+            "surface-bg": "#F4F7F5",
+            "surface-card": "#FFFFFF",
+            "primary": "#006837",
+            "primary-container": "#E3F2E9"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            arabic: ["'Amiri'", "serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .uin-pattern {
+      background-color: #004825;
+      background-image: radial-gradient(#D4AF37 0.75px, transparent 0.75px), radial-gradient(#D4AF37 0.75px, #004825 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.95;
+    }
+  </style>
+</head>
+<body class="bg-surface-bg text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+<div>
+
+  <!-- TOP BAR KAMPUS UIN AR-RANIRY -->
+  <div class="bg-uin-green-dark text-uin-gold text-xs py-1.5 px-6 border-b border-uin-gold/30">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-2 font-medium">
+        <span id="topBarArabic" class="font-arabic text-sm text-uin-yellow font-bold">جامعة الرائري الإسلامية الحكومية بندا أتشيه</span>
+        <span id="topBarSubtitle" class="hidden md:inline">| UIN Ar-Raniry Banda Aceh</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] text-gray-200">
+        <span id="topBarTagline">Sistem Informasi Infrastruktur & Sarpras Kampus</span>
+        <span id="topBarPhone">• Emergency Call Sarpras: (0651) 7557444</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR (5 MENU UTAMA) -->
+  <nav class="w-full top-0 sticky bg-white shadow-md border-b-2 border-uin-gold z-40">
+    <div class="flex justify-between items-center w-full px-4 lg:px-8 max-w-7xl mx-auto py-3">
+      <!-- Logo UIN Ar-Raniry Header -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-uin-green flex items-center justify-center text-uin-gold shadow-md font-bold border-2 border-uin-gold">
+          <span class="material-symbols-outlined text-2xl">account_balance</span>
+        </div>
+        <div>
+          <a class="text-lg md:text-xl font-extrabold tracking-tight text-uin-green uppercase block leading-none" href="#">
+            <span id="headerBrandTitle">InfraFix <span class="text-uin-gold-dark">Ar-Raniry</span></span>
+          </a>
+          <span id="headerSubBrand" class="text-[10px] text-gray-500 font-semibold tracking-wider">BIRO PERENCANAAN & KEUANGAN SARPRAS</span>
+        </div>
+      </div>
+      
+      <!-- 5 MENU UTAMA PUBLIK -->
+      <div class="hidden xl:flex items-center gap-1 bg-gray-50 p-1 rounded-xl border border-gray-200">
+        <button onclick="switchCategory('kendaraan')" id="menu-kendaraan" class="nav-menu-btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-600 hover:text-uin-green">
+          🚗 Kendaraan
+        </button>
+        <button onclick="switchCategory('listrik')" id="menu-listrik" class="nav-menu-btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-600 hover:text-uin-green">
+          ⚡ Listrik
+        </button>
+        <button onclick="switchCategory('air_bersih')" id="menu-air_bersih" class="nav-menu-btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-uin-green text-white shadow-sm">
+          💧 Air Bersih
+        </button>
+        <button onclick="switchCategory('air_kotor')" id="menu-air_kotor" class="nav-menu-btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-600 hover:text-uin-green">
+          🚽 Air Kotor
+        </button>
+        <button onclick="switchCategory('fasilitas')" id="menu-fasilitas" class="nav-menu-btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-600 hover:text-uin-green flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-uin-gold-dark">apartment</span>
+          🏢 Fasilitas Kampus
+        </button>
+      </div>
+
+      <!-- Action Buttons (Otentikasi Admin) -->
+      <div class="flex items-center gap-3">
+        <div id="adminBadge" class="hidden flex items-center gap-1 bg-uin-gold-light text-uin-green-dark px-3 py-1 rounded-full text-xs font-bold border border-uin-gold">
+          <span class="material-symbols-outlined text-[16px]">verified_user</span>
+          Admin Active
+        </div>
+
+        <button id="authBtn" onclick="handleAuthButtonClick()" class="bg-uin-green hover:bg-uin-green-dark text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all cursor-pointer border border-uin-gold/40">
+          <span class="material-symbols-outlined text-[18px]">lock</span>
+          <span id="authBtnText">Login Admin</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="xl:hidden flex overflow-x-auto border-t border-gray-200 px-4 py-2 gap-2 bg-gray-50">
+      <button onclick="switchCategory('kendaraan')" class="mobile-nav-btn whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-gray-200" id="m-menu-kendaraan">🚗 Kendaraan</button>
+      <button onclick="switchCategory('listrik')" class="mobile-nav-btn whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-gray-200" id="m-menu-listrik">⚡ Listrik</button>
+      <button onclick="switchCategory('air_bersih')" class="mobile-nav-btn whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-lg bg-uin-green text-white" id="m-menu-air_bersih">💧 Air Bersih</button>
+      <button onclick="switchCategory('air_kotor')" class="mobile-nav-btn whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-gray-200" id="m-menu-air_kotor">🚽 Air Kotor</button>
+      <button onclick="switchCategory('fasilitas')" class="mobile-nav-btn whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-gray-200" id="m-menu-fasilitas">🏢 Fasilitas Kampus</button>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER KAMPUS UIN AR-RANIRY -->
+  <header id="heroHeaderBg" class="relative w-full h-[380px] flex items-center justify-center overflow-hidden uin-pattern text-white border-b-4 border-uin-gold bg-cover bg-center transition-all duration-500">
+    <div id="heroOverlay" class="absolute inset-0 bg-gradient-to-r from-uin-green-dark/90 via-uin-green/80 to-uin-green-dark/90 z-0"></div>
+    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto space-y-3">
+      <div class="inline-flex items-center gap-2 bg-uin-gold/20 text-uin-yellow px-4 py-1 rounded-full text-xs font-bold border border-uin-gold/40 backdrop-blur-sm">
+        <span class="material-symbols-outlined text-[16px]">domain</span>
+        <span id="heroBadgeText">BIRO ADM. UMUM, PERENCANAAN & KEUANGAN UIN AR-RANIRY</span>
+      </div>
+      <h1 id="heroTitle" class="text-3xl md:text-4xl font-extrabold tracking-tight text-white drop-shadow-md">
+        Sistem Jaringan Air Bersih Kampus
+      </h1>
+      <p id="heroDesc" class="text-sm md:text-base text-gray-200 max-w-xl mx-auto font-medium leading-relaxed">
+        Layanan resmi pemantauan perbaikan infrastruktur teknis, jaringan utilitas, dan sarana prasarana UIN Ar-Raniry Banda Aceh.
+      </p>
+      <div class="pt-2">
+        <a href="#riwayat-section" class="inline-flex items-center gap-2 bg-uin-gold hover:bg-uin-yellow text-uin-green-dark font-bold px-6 py-2.5 rounded-lg text-xs shadow-lg transition-all hover:scale-105">
+          <span class="material-symbols-outlined text-[18px]">list_alt</span>
+          Lihat Riwayat Pemeliharaan
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD ADMIN PANEL -->
+  <section id="adminDashboardPanel" class="hidden w-full py-6 bg-uin-green-dark/5 border-b-2 border-uin-gold/40">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <div class="bg-white p-6 rounded-2xl border-2 border-uin-green/30 shadow-xl">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-200 pb-4 mb-5 gap-3">
+          <div>
+            <h2 class="text-xl font-extrabold text-uin-green flex items-center gap-2">
+              <span class="material-symbols-outlined text-uin-gold-dark">space_dashboard</span>
+              Dashboard Admin Input Sarpras Kampus
+            </h2>
+            <p class="text-xs text-gray-600">Pilih salah satu metode pengisian data ke Google Sheets & Drive UIN Ar-Raniry.</p>
+          </div>
+          <button onclick="logoutAdmin()" class="text-xs text-red-600 hover:text-red-800 flex items-center gap-1 font-bold bg-red-50 px-3 py-1.5 rounded-lg border border-red-200 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">logout</span> Logout Admin
+          </button>
+        </div>
+
+        <!-- Tab Navigasi Input Admin -->
+        <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+          <button onclick="switchInputTab('single')" id="tab-btn-single" class="input-tab-btn px-4 py-2 rounded-lg font-bold text-xs bg-uin-green text-white shadow">
+            1. Input Single (Per Item)
+          </button>
+          <button onclick="switchInputTab('multiple')" id="tab-btn-multiple" class="input-tab-btn px-4 py-2 rounded-lg font-bold text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+            2. Input Multiple Data
+          </button>
+          <button onclick="switchInputTab('excel')" id="tab-btn-excel" class="input-tab-btn px-4 py-2 rounded-lg font-bold text-xs bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-uin-green">table_chart</span>
+            3. Upload Excel (.xlsx)
+          </button>
+          <button onclick="switchInputTab('bulanan')" id="tab-btn-bulanan" class="input-tab-btn px-4 py-2 rounded-lg font-bold text-xs bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-uin-gold-dark">cloud_upload</span>
+            4. Upload Lampiran Drive Bulanan
+          </button>
+          <button onclick="switchInputTab('settings')" id="tab-btn-settings" class="input-tab-btn px-4 py-2 rounded-lg font-bold text-xs bg-uin-gold/20 text-uin-green-dark border border-uin-gold hover:bg-uin-gold/30 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-uin-gold-dark">tune</span>
+            5. Edit Header, Footer & Hero
+          </button>
+        </div>
+
+        <!-- METODE 1: SINGLE ITEM -->
+        <form id="formSingleInput" onsubmit="handleSingleSubmit(event)" class="input-panel-section space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Kategori Infrastruktur</label>
+              <select name="kategori" id="singleKategori" required class="w-full border border-gray-300 rounded-lg p-2 text-xs bg-white focus:ring-2 focus:ring-uin-green">
+                <option value="air_bersih">Jaringan Air Bersih</option>
+                <option value="air_kotor">Air Kotor / Sanitasi</option>
+                <option value="listrik">Jaringan Listrik</option>
+                <option value="kendaraan">Perbaikan Kendaraan</option>
+                <option value="fasilitas">Fasilitas & Gedung Kampus</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal Perbaikan</label>
+              <input type="date" name="tanggal" id="singleTanggal" required class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Volume / Jumlah</label>
+              <input type="text" name="volume" id="singleVolume" required placeholder="Contoh: 2 Titik / 3 Unit" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Lokasi Perbaikan Kampus</label>
+              <input type="text" name="lokasi" id="singleLokasi" required placeholder="Contoh: Gedung Rektorat Lt 2" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Uraian Perbaikan</label>
+            <input type="text" name="uraian" id="singleUraian" required placeholder="Contoh: Penggantian kran & perbaikan pipa bocor" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Upload Berkas/Foto Bukti (Google Drive UIN)</label>
+            <input type="file" id="singleFileInput" accept="image/*,.pdf" class="w-full text-xs text-gray-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-uin-green-light file:text-white cursor-pointer"/>
+          </div>
+          <div class="flex justify-end pt-2">
+            <button type="submit" id="btnSingleSubmit" class="bg-uin-green hover:bg-uin-green-dark text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow cursor-pointer">
+              <span id="spinSingle" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+              Simpan Data Perbaikan
+            </button>
+          </div>
+        </form>
+
+        <!-- METODE 2: MULTIPLE DATA -->
+        <div id="formMultipleInput" class="input-panel-section hidden space-y-4">
+          <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <div class="flex items-center gap-3">
+              <label class="text-xs font-bold text-gray-700">Target Kategori Menu:</label>
+              <select id="multipleCategory" class="border border-gray-300 rounded-lg p-1.5 text-xs bg-white">
+                <option value="air_bersih">Jaringan Air Bersih</option>
+                <option value="air_kotor">Air Kotor / Sanitasi</option>
+                <option value="listrik">Jaringan Listrik</option>
+                <option value="kendaraan">Perbaikan Kendaraan</option>
+                <option value="fasilitas">Fasilitas & Gedung Kampus</option>
+              </select>
+            </div>
+            <button onclick="addMultipleRow()" class="border border-uin-green text-uin-green px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-uin-green/10 flex items-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">add</span> Tambah Baris
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border border-gray-200 rounded-lg">
+              <thead class="bg-gray-100 font-bold">
+                <tr>
+                  <th class="p-2 border-b">Tanggal</th>
+                  <th class="p-2 border-b">Uraian Perbaikan</th>
+                  <th class="p-2 border-b">Volume</th>
+                  <th class="p-2 border-b">Lokasi Kampus</th>
+                  <th class="p-2 border-b w-12 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="multipleTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button onclick="handleMultipleSubmit()" id="btnMultipleSubmit" class="bg-uin-green hover:bg-uin-green-dark text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow cursor-pointer">
+              <span id="spinMultiple" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+              Simpan Semua Baris Data
+            </button>
+          </div>
+        </div>
+
+        <!-- METODE 3: EXCEL UPLOAD -->
+        <div id="formExcelInput" class="input-panel-section hidden space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-uin-green/5 p-3 rounded-lg border border-uin-green/20">
+            <div>
+              <h4 class="text-xs font-bold text-uin-green-dark">Download Template File Excel (.xlsx)</h4>
+              <p class="text-[11px] text-gray-600">Gunakan format ini untuk mengunggah puluhan data sekaligus.</p>
+            </div>
+            <button onclick="downloadExcelTemplate()" class="bg-uin-gold hover:bg-uin-yellow text-uin-green-dark px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1 shadow cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">download</span>
+              Download Template (.xlsx)
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Target Kategori Menu</label>
+              <select id="excelCategory" class="w-full border border-gray-300 rounded-lg p-2 text-xs bg-white">
+                <option value="air_bersih">Jaringan Air Bersih</option>
+                <option value="air_kotor">Air Kotor / Sanitasi</option>
+                <option value="listrik">Jaringan Listrik</option>
+                <option value="kendaraan">Perbaikan Kendaraan</option>
+                <option value="fasilitas">Fasilitas & Gedung Kampus</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Pilih File Excel Komputer</label>
+              <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" onchange="previewExcelFile(event)" class="w-full text-xs text-gray-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-uin-green file:text-white cursor-pointer"/>
+            </div>
+          </div>
+
+          <div id="excelPreviewContainer" class="hidden space-y-2">
+            <h5 class="text-xs font-bold text-gray-700 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-uin-green">preview</span>
+              Pratinjau Data (<span id="excelRowCount">0</span> baris terdeteksi)
+            </h5>
+            <div class="overflow-x-auto max-h-48 border border-gray-200 rounded-lg">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-gray-100 sticky top-0 font-bold">
+                  <tr>
+                    <th class="p-2 border-b">Tanggal</th>
+                    <th class="p-2 border-b">Uraian</th>
+                    <th class="p-2 border-b">Volume</th>
+                    <th class="p-2 border-b">Lokasi</th>
+                  </tr>
+                </thead>
+                <tbody id="excelPreviewBody"></tbody>
+              </table>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button onclick="handleExcelUploadSubmit()" id="btnExcelSubmit" class="bg-uin-green hover:bg-uin-green-dark text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow cursor-pointer">
+                <span id="spinExcel" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+                Upload Massal ke Google Sheets
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- METODE 4: UPLOAD LAMPIRAN DRIVE BULANAN -->
+        <form id="formBulananInput" onsubmit="handleBulananSubmit(event)" class="input-panel-section hidden space-y-4">
+          <div class="bg-uin-gold-light/40 p-3 rounded-lg border border-uin-gold/40 text-xs text-uin-green-dark font-medium">
+            💡 Tambahkan berkas rekapitulasi bulanan ke Google Drive.
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Kategori Infrastruktur</label>
+              <select name="kategori" id="bulananKategori" class="w-full border border-gray-300 rounded-lg p-2 text-xs bg-white">
+                <option value="air_bersih">Jaringan Air Bersih</option>
+                <option value="air_kotor">Air Kotor / Sanitasi</option>
+                <option value="listrik">Jaringan Listrik</option>
+                <option value="kendaraan">Perbaikan Kendaraan</option>
+                <option value="fasilitas">Fasilitas & Gedung Kampus</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Tipe Periode Bulan</label>
+              <select id="tipePeriodeBulanan" name="tipePeriode" onchange="toggleTipeBulanan()" class="w-full border border-gray-300 rounded-lg p-2 text-xs bg-white">
+                <option value="1bulan">1 Bulan Saja</option>
+                <option value="2bulan">Rentang 2 Bulan (Contoh: Jan - Feb)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Bulan Awal / Utama</label>
+              <input type="text" name="bulan" id="bulananBulan" required placeholder="Contoh: Maret 2026" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="containerBulanAkhir" class="hidden">
+              <label class="block text-xs font-bold text-gray-700 mb-1">Bulan Sampai (Akhir)</label>
+              <input type="text" name="bulanAkhir" id="bulananBulanAkhir" placeholder="Contoh: April 2026" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Total Kasus Perbaikan</label>
+              <input type="text" name="totalKasus" id="bulananTotalKasus" required placeholder="Contoh: 15 Kasus" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Volume Kumulatif Total</label>
+              <input type="text" name="volumeTotal" id="bulananVolumeTotal" required placeholder="Contoh: 1,450 m3 / 20 Unit" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Status Pemeliharaan</label>
+              <select name="status" id="bulananStatus" class="w-full border border-gray-300 rounded-lg p-2 text-xs bg-white">
+                <option value="Optimal">Optimal</option>
+                <option value="Perhatian">Perhatian</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Lampiran File Laporan Drive (PDF/Excel/Gambar)</label>
+            <input type="file" id="bulananFileInput" accept="image/*,.pdf,.xlsx,.doc,.docx" class="w-full text-xs text-gray-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-uin-gold file:text-uin-green-dark font-bold cursor-pointer"/>
+          </div>
+          <div class="flex justify-end pt-2">
+            <button type="submit" id="btnBulananSubmit" class="bg-uin-green hover:bg-uin-green-dark text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow cursor-pointer">
+              <span id="spinBulanan" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+              Simpan Laporan Bulanan & Drive
+            </button>
+          </div>
+        </form>
+
+        <!-- METODE 5: EDIT SETTINGS & WEB APP API URL -->
+        <form id="formSettingsInput" onsubmit="handleSettingsSubmit(event)" class="input-panel-section hidden space-y-5">
+          <div class="bg-uin-green/5 p-4 rounded-xl border border-uin-green/20 space-y-4">
+            <h3 class="text-xs font-bold text-uin-green-dark flex items-center gap-1.5 uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[18px] text-uin-gold-dark">link</span>
+              0. URL Web App Google Apps Script (Untuk Vercel / Live Deployment)
+            </h3>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Google Apps Script Web App Endpoint URL</label>
+              <input type="url" id="settingGasUrl" placeholder="https://script.google.com/macros/s/AKfycbx.../exec" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              <p class="text-[11px] text-gray-500 mt-1">Masukkan URL Web App hasil deploy Google Apps Script untuk menghubungkan frontend Vercel secara otomatis.</p>
+            </div>
+          </div>
+
+          <div class="bg-uin-green/5 p-4 rounded-xl border border-uin-green/20 space-y-4">
+            <h3 class="text-xs font-bold text-uin-green-dark flex items-center gap-1.5 uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[18px] text-uin-gold-dark">wallpaper</span>
+              1. Pengaturan Gambar Latar & Teks Hero Section
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">URL Gambar Latar Belakang Hero</label>
+                <input type="url" id="settingHeroBgUrl" placeholder="https://domain.com/foto-kampus.jpg" onchange="previewHeroBgImage(this.value)" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Upload Gambar Hero (Format JPG/PNG)</label>
+                <input type="file" id="settingHeroBgFile" accept="image/*" onchange="handleHeroFileSelect(event)" class="w-full text-xs text-gray-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-uin-gold file:text-uin-green-dark font-bold cursor-pointer"/>
+              </div>
+            </div>
+
+            <!-- Pratinjau Gambar Hero -->
+            <div id="heroBgPreviewBox" class="hidden p-3 bg-white border border-gray-200 rounded-lg flex items-center gap-4">
+              <img id="imgHeroPreview" src="" alt="Hero Background Preview" class="w-32 h-16 object-cover rounded-md border border-gray-300 shadow-sm"/>
+              <div>
+                <span class="text-xs font-bold text-uin-green block">Pratinjau Gambar Hero Terpasang</span>
+                <span class="text-[11px] text-gray-500">Transparansi gradien hijau khas UIN Ar-Raniry akan otomatis melapisi gambar.</span>
+                <button type="button" onclick="resetHeroBg()" class="text-[11px] text-red-600 underline font-bold block mt-1 cursor-pointer">Gunakan Pola Default UIN</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Teks Sub-Badge Hero</label>
+                <input type="text" id="settingHeroBadge" placeholder="BIRO ADM. UMUM, PERENCANAAN & KEUANGAN UIN AR-RANIRY" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Tingkat Kegelapan Overlay Gambar (0.1 - 0.95)</label>
+                <input type="number" id="settingHeroOpacity" min="0.1" max="0.95" step="0.05" value="0.8" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-4">
+            <h3 class="text-xs font-bold text-uin-green-dark flex items-center gap-1.5 uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[18px] text-uin-green">web</span>
+              2. Pengaturan Header & Top Bar Kampus
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Teks Arab Top Bar</label>
+                <input type="text" id="settingTopBarArabic" placeholder="جامعة الرائري الإسلامية الحكومية بندا أتشيه" class="w-full border border-gray-300 rounded-lg p-2 text-xs font-arabic focus:ring-2 focus:ring-uin-green"/>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Telepon Darurat Top Bar</label>
+                <input type="text" id="settingTopBarPhone" placeholder="• Emergency Call Sarpras: (0651) 7557444" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Judul Brand Header Utama</label>
+                <input type="text" id="settingHeaderTitle" placeholder="InfraFix Ar-Raniry" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Sub-Judul Unit Biro Header</label>
+                <input type="text" id="settingHeaderSubTitle" placeholder="BIRO PERENCANAAN & KEUANGAN SARPRAS" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-4">
+            <h3 class="text-xs font-bold text-uin-green-dark flex items-center gap-1.5 uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[18px] text-uin-green">call_to_action</span>
+              3. Pengaturan Footer Kampus
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Nama Organisasi / Kampus Footer</label>
+                <input type="text" id="settingFooterTitle" placeholder="UIN Ar-Raniry Banda Aceh" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Teks Hak Cipta (Copyright)</label>
+                <input type="text" id="settingFooterCopyright" placeholder="© 2026 UIN Ar-Raniry Banda Aceh. All rights reserved." class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green"/>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Alamat Lengkap & Deskripsi Footer</label>
+              <textarea id="settingFooterAddress" rows="2" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-uin-green" placeholder="Jl. Lingkar Kampus, Kopelma Darussalam, Banda Aceh, Provinsi Aceh. Layanan Terpadu Sarpras & Pemeliharaan Infrastruktur Kampus Syariat Islam."></textarea>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2 gap-2">
+            <button type="button" onclick="loadSettingsToAdminForm()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-200 cursor-pointer">Reset Form</button>
+            <button type="submit" id="btnSettingsSubmit" class="bg-uin-green hover:bg-uin-green-dark text-white px-6 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg cursor-pointer">
+              <span id="spinSettings" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+              Simpan & Terapkan Pengaturan
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TABEL RIWAYAT PEMELIHARAAN -->
+  <section id="riwayat-section" class="w-full py-8 max-w-7xl mx-auto px-4 lg:px-8">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-gray-100 pb-4">
+        <div>
+          <span id="currentCategoryLabel" class="text-xs font-extrabold text-uin-gold-dark tracking-wider uppercase bg-uin-gold-light px-3 py-1 rounded-full border border-uin-gold/40">
+            KATEGORI: JARINGAN AIR BERSIH KAMPUS
+          </span>
+          <h2 class="text-xl font-extrabold text-uin-green mt-2">Riwayat Pemeliharaan & Perbaikan Sarpras</h2>
+        </div>
+        <p class="text-xs text-gray-500 font-medium">Data pemeliharaan rutin & penanganan darurat kampus</p>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-gray-200">
+        <table class="w-full text-left border-collapse min-w-[700px]">
+          <thead class="bg-uin-green text-white text-xs uppercase font-bold">
+            <tr>
+              <th class="px-4 py-3 border-b">Tanggal</th>
+              <th class="px-4 py-3 border-b">Uraian Perbaikan</th>
+              <th class="px-4 py-3 border-b">Volume / Jumlah</th>
+              <th class="px-4 py-3 border-b">Lokasi Kampus</th>
+              <th class="px-4 py-3 border-b text-center">Berkas / Drive</th>
+            </tr>
+          </thead>
+          <tbody id="table-riwayat-body" class="bg-white text-xs divide-y divide-gray-100">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABEL LAPORAN BULANAN -->
+  <section class="w-full py-8 bg-gray-50 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <button onclick="toggleBulananSection()" class="w-full flex items-center justify-between p-5 bg-white border-2 border-uin-green/30 rounded-2xl shadow-md hover:border-uin-green transition-all cursor-pointer group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-uin-green-light text-white flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl">analytics</span>
+          </div>
+          <div class="text-left">
+            <h2 class="text-lg md:text-xl font-bold text-uin-green">Laporan Perbaikan Bulanan (Rekapitulasi)</h2>
+            <p class="text-xs text-gray-500">Klik untuk <span id="bulananStatusText">membuka</span> akumulasi data & lampiran Drive bulanan</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 text-uin-green font-bold text-xs bg-uin-green/10 px-4 py-2 rounded-xl group-hover:bg-uin-green group-hover:text-white transition-all">
+          <span id="bulananBtnText">Tampilkan</span>
+          <span id="bulananChevron" class="material-symbols-outlined transition-transform duration-300">expand_more</span>
+        </div>
+      </button>
+
+      <div id="bulananContent" class="hidden mt-4 overflow-x-auto border border-gray-200 rounded-2xl bg-white shadow-md transition-all duration-300">
+        <table class="w-full text-left border-collapse min-w-[650px]">
+          <thead class="bg-uin-green-dark text-white font-bold text-xs uppercase">
+            <tr>
+              <th class="px-4 py-3 border-b">Bulan / Periode</th>
+              <th class="px-4 py-3 border-b">Total Perbaikan</th>
+              <th class="px-4 py-3 border-b">Volume Kumulatif</th>
+              <th class="px-4 py-3 border-b">Status Pemeliharaan</th>
+              <th class="px-4 py-3 border-b">Lampiran Drive</th>
+            </tr>
+          </thead>
+          <tbody id="table-bulanan-body" class="bg-white text-xs divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER KHAS UIN AR-RANIRY BANDA ACEH -->
+<footer class="w-full bg-uin-green-dark text-white border-t-4 border-uin-gold">
+  <div class="max-w-7xl mx-auto px-4 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-12 gap-6">
+    <div class="md:col-span-5 space-y-2">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-uin-gold text-2xl">account_balance</span>
+        <span id="footerBrandTitle" class="text-lg font-extrabold uppercase tracking-wider text-uin-yellow">UIN Ar-Raniry Banda Aceh</span>
+      </div>
+      <p id="footerAddressText" class="text-xs text-gray-300 leading-relaxed">
+        Jl. Lingkar Kampus, Kopelma Darussalam, Banda Aceh, Provinsi Aceh.<br/>
+        Layanan Terpadu Sarpras & Pemeliharaan Infrastruktur Kampus Syariat Islam.
+      </p>
+    </div>
+    <div class="md:col-span-7 flex flex-wrap justify-start md:justify-end gap-6 text-xs text-gray-300 items-center">
+      <a class="hover:text-uin-yellow transition-colors" href="#">Portal Utama Kampus</a>
+      <a class="hover:text-uin-yellow transition-colors" href="#">Sistem Informasi Akademik</a>
+      <a class="hover:text-uin-yellow transition-colors" href="#">Biro Sarpras</a>
+      <a class="hover:text-uin-yellow transition-colors" href="#">Status Layanan</a>
+    </div>
+  </div>
+  <div id="footerCopyrightText" class="bg-black/30 text-center py-3 text-[11px] text-uin-gold/80 border-t border-uin-gold/20">
+    © 2026 UIN Ar-Raniry Banda Aceh. All rights reserved. Powered by Google Apps Script & Drive.
+  </div>
+</footer>
+
+<!-- MODAL LOGIN ADMIN -->
+<div id="loginModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border-2 border-uin-gold overflow-hidden">
+    <div class="bg-uin-green text-white p-4 flex justify-between items-center border-b-2 border-uin-gold">
+      <h3 class="font-bold flex items-center gap-2 text-sm">
+        <span class="material-symbols-outlined text-uin-gold text-[20px]">admin_panel_settings</span>
+        Login Admin Sarpras UIN Ar-Raniry
+      </h3>
+      <button onclick="closeLoginModal()" class="text-white hover:opacity-80 text-xl font-bold cursor-pointer">&times;</button>
+    </div>
+    <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Username Admin</label>
+        <input type="text" id="adminUser" required placeholder="admin" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs bg-white focus:ring-2 focus:ring-uin-green focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+        <input type="password" id="adminPass" required placeholder="••••" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs bg-white focus:ring-2 focus:ring-uin-green focus:outline-none"/>
+      </div>
+      <p class="text-[11px] text-gray-500 italic">*Password Login Admin: <strong>1122</strong></p>
+
+      <div class="pt-2 flex justify-end gap-2 border-t border-gray-100">
+        <button type="button" onclick="closeLoginModal()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-xs font-bold hover:bg-gray-50 cursor-pointer">Batal</button>
+        <button type="submit" id="btnLoginSubmit" class="px-5 py-2 rounded-lg bg-uin-green hover:bg-uin-green-dark text-white text-xs font-bold flex items-center gap-2 shadow cursor-pointer">
+          <span id="spinLogin" class="material-symbols-outlined text-[16px] animate-spin hidden">progress_activity</span>
+          Masuk Administrator
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let currentCategory = 'air_bersih';
+  let isAdminLoggedIn = false;
+  let parsedExcelData = [];
+
+  // Configuration for External REST API Deployment (e.g., Vercel)
+  let GAS_WEB_APP_URL = localStorage.getItem("gas_app_url") || "";
+
+  let siteSettings = {
+    heroBgUrl: "",
+    heroBadge: "BIRO ADM. UMUM, PERENCANAAN & KEUANGAN UIN AR-RANIRY",
+    heroOpacity: "0.8",
+    topBarArabic: "جامعة الرائري الإسلامية الحكومية بندا أتشيه",
+    topBarPhone: "• Emergency Call Sarpras: (0651) 7557444",
+    headerTitle: "InfraFix Ar-Raniry",
+    headerSubTitle: "BIRO PERENCANAAN & KEUANGAN SARPRAS",
+    footerTitle: "UIN Ar-Raniry Banda Aceh",
+    footerAddress: "Jl. Lingkar Kampus, Kopelma Darussalam, Banda Aceh, Provinsi Aceh.\nLayanan Terpadu Sarpras & Pemeliharaan Infrastruktur Kampus Syariat Islam.",
+    footerCopyright: "© 2026 UIN Ar-Raniry Banda Aceh. All rights reserved. Powered by Google Apps Script & Drive."
+  };
+
+  // Safe file reader helper for base64
+  function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        resolve(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => resolve({
+        name: file.name,
+        mimeType: file.type,
+        base64: reader.result
+      });
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Robust Unified API Call Runner (supports native Apps Script container & external REST API)
+  async function callBackend(action, payload = {}, appsScriptFnName = "") {
+    // 1. Check if running inside Google Apps Script iframe
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      return new Promise((resolve) => {
+        let runner = google.script.run
+          .withSuccessHandler((res) => resolve(res))
+          .withFailureHandler((err) => {
+            console.warn("Apps Script Call Warning: ", err);
+            resolve({ success: false, error: err.message || err.toString() });
+          });
+
+        if (appsScriptFnName && typeof runner[appsScriptFnName] === 'function') {
+          if (payload && Object.keys(payload).length > 0) {
+            runner[appsScriptFnName](payload);
+          } else {
+            runner[appsScriptFnName]();
+          }
+        } else {
+          resolve({ success: false, error: "Method '" + appsScriptFnName + "' tidak ditemukan." });
+        }
+      });
+    }
+
+    // 2. External HTTP Fetch REST API (e.g. Vercel deployment)
+    if (GAS_WEB_APP_URL && GAS_WEB_APP_URL.trim() !== "") {
+      try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: action, ...payload })
+        });
+        
+        const rawText = await response.text();
+        try {
+          return JSON.parse(rawText);
+        } catch(jsonErr) {
+          return { success: false, error: "Respon server bukan JSON valid: " + rawText.substring(0, 150) };
+        }
+      } catch (err) {
+        return { success: false, error: "Gagal terhubung ke Google Web App API: " + err.message };
+      }
+    }
+
+    // 3. Demo fallback mode
+    return { success: true, isDemo: true };
+  }
+
+  // Modal & Auth Handlers
+  function handleAuthButtonClick() {
+    if (isAdminLoggedIn) {
+      logoutAdmin();
+    } else {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+  }
+
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.add('hidden');
+  }
+
+  function handleAdminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('adminUser').value;
+    const pass = document.getElementById('adminPass').value;
+    const spin = document.getElementById('spinLogin');
+
+    spin.classList.remove('hidden');
+
+    setTimeout(() => {
+      spin.classList.add('hidden');
+      if (user === 'admin' && pass === '1122') {
+        isAdminLoggedIn = true;
+        document.getElementById('adminDashboardPanel').classList.remove('hidden');
+        document.getElementById('adminBadge').classList.remove('hidden');
+        document.getElementById('authBtnText').innerText = 'Logout Admin';
+        closeLoginModal();
+      } else {
+        alert('Username atau Password Admin salah! Gagal masuk.');
+      }
+    }, 400);
+  }
+
+  function logoutAdmin() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminDashboardPanel').classList.add('hidden');
+    document.getElementById('adminBadge').classList.add('hidden');
+    document.getElementById('authBtnText').innerText = 'Login Admin';
+  }
+
+  function switchCategory(cat) {
+    currentCategory = cat;
+    
+    // Update active navbar styles
+    document.querySelectorAll('.nav-menu-btn, .mobile-nav-btn').forEach(btn => {
+      btn.classList.remove('bg-uin-green', 'text-white', 'shadow-sm');
+      btn.classList.add('text-gray-600', 'bg-white');
+    });
+
+    const activeNav = document.getElementById(`menu-${cat}`);
+    if (activeNav) {
+      activeNav.classList.remove('text-gray-600', 'bg-white');
+      activeNav.classList.add('bg-uin-green', 'text-white', 'shadow-sm');
+    }
+
+    const activeMobileNav = document.getElementById(`m-menu-${cat}`);
+    if (activeMobileNav) {
+      activeMobileNav.classList.remove('text-gray-600', 'bg-white');
+      activeMobileNav.classList.add('bg-uin-green', 'text-white');
+    }
+
+    // Update Hero Title & Desc
+    const infoMap = {
+      'air_bersih': { title: 'Sistem Jaringan Air Bersih Kampus', label: 'KATEGORI: JARINGAN AIR BERSIH KAMPUS', desc: 'Pemantauan suplai air tawar, instalasi filtrasi Masjid Ar-Raniry, serta perbaikan pompa utama gedung perkuliahan.' },
+      'air_kotor': { title: 'Jaringan Air Kotor & Sanitasi Kampus', label: 'KATEGORI: AIR KOTOR & SANITASI KAMPUS', desc: 'Pengurasan drainase induk kampus, instalasi IPAL komunal, dan perawatan sarana sanitasi mahasiswi/mahasiswa.' },
+      'listrik': { title: 'Sistem Kelistrikan & Gardu Kampus', label: 'KATEGORI: JARINGAN LISTRIK & TRAFO', desc: 'Perawatan gardu listrik kampus, genset darurat gedung perkuliahan, dan transmisi kabel penerangan jalan.' },
+      'kendaraan': { title: 'Armada & Kendaraan Dinas Kampus', label: 'KATEGORI: PERBAIKAN KENDARAAN DINAS', desc: 'Servis bus kampus UIN Ar-Raniry, mobil operasional rektorat, dan kendaraan tangki siram taman.' },
+      'fasilitas': { title: 'Pemeliharaan Gedung & Fasilitas Kampus', label: 'KATEGORI: FASILITAS & GEDUNG KAMPUS', desc: 'Perbaikan atap bocor, pengecatan gedung perkuliahan, perawatan AC aula, dan perbaikan fasilitas laboratorium.' }
+    };
+
+    const info = infoMap[cat] || infoMap['air_bersih'];
+    document.getElementById('heroTitle').innerText = info.title;
+    document.getElementById('heroDesc').innerText = info.desc;
+    document.getElementById('currentCategoryLabel').innerText = info.label;
+
+    // Load table data
+    loadDataFromSheets();
+  }
+
+  function switchInputTab(tabName) {
+    document.querySelectorAll('.input-tab-btn').forEach(btn => {
+      btn.classList.remove('bg-uin-green', 'text-white', 'shadow');
+      btn.classList.add('bg-gray-100', 'text-gray-700');
+    });
+
+    const targetBtn = document.getElementById(`tab-btn-${tabName}`);
+    if (targetBtn) {
+      targetBtn.classList.remove('bg-gray-100', 'text-gray-700');
+      targetBtn.classList.add('bg-uin-green', 'text-white', 'shadow');
+    }
+
+    document.querySelectorAll('.input-panel-section').forEach(sec => sec.classList.add('hidden'));
+
+    const sectionMap = {
+      'single': 'formSingleInput',
+      'multiple': 'formMultipleInput',
+      'excel': 'formExcelInput',
+      'bulanan': 'formBulananInput',
+      'settings': 'formSettingsInput'
+    };
+
+    const targetSecId = sectionMap[tabName];
+    if (targetSecId) {
+      document.getElementById(targetSecId).classList.remove('hidden');
+    }
+
+    if (tabName === 'settings') {
+      loadSettingsToAdminForm();
+    }
+  }
+
+  function toggleBulananSection() {
+    const content = document.getElementById('bulananContent');
+    const statusText = document.getElementById('bulananStatusText');
+    const btnText = document.getElementById('bulananBtnText');
+    const chevron = document.getElementById('bulananChevron');
+
+    const isHidden = content.classList.contains('hidden');
+    if (isHidden) {
+      content.classList.remove('hidden');
+      if (statusText) statusText.innerText = 'menutup';
+      if (btnText) btnText.innerText = 'Sembunyikan';
+      if (chevron) chevron.style.transform = 'rotate(180deg)';
+    } else {
+      content.classList.add('hidden');
+      if (statusText) statusText.innerText = 'membuka';
+      if (btnText) btnText.innerText = 'Tampilkan';
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function toggleTipeBulanan() {
+    const tipe = document.getElementById('tipePeriodeBulanan').value;
+    const container = document.getElementById('containerBulanAkhir');
+    if (tipe === '2bulan') {
+      container.classList.remove('hidden');
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+
+  function addMultipleRow() {
+    const tbody = document.getElementById('multipleTableBody');
+    if (!tbody) return;
+    const tr = document.createElement('tr');
+    tr.className = 'border-b hover:bg-gray-50';
+    tr.innerHTML = `
+      <td class="p-2"><input type="date" class="row-tanggal border border-gray-300 rounded p-1 text-xs w-full" required/></td>
+      <td class="p-2"><input type="text" class="row-uraian border border-gray-300 rounded p-1 text-xs w-full" placeholder="Uraian perbaikan..." required/></td>
+      <td class="p-2"><input type="text" class="row-volume border border-gray-300 rounded p-1 text-xs w-full" placeholder="Volume (e.g. 2 Unit)" required/></td>
+      <td class="p-2"><input type="text" class="row-lokasi border border-gray-300 rounded p-1 text-xs w-full" placeholder="Lokasi Kampus..." required/></td>
+      <td class="p-2 text-center">
+        <button type="button" onclick="removeMultipleRow(this)" class="text-red-500 hover:text-red-700 font-bold text-xs p-1 cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeMultipleRow(btn) {
+    const tr = btn.closest('tr');
+    if (tr) tr.remove();
+  }
+
+  async function handleSingleSubmit(e) {
+    e.preventDefault();
+    const spin = document.getElementById('spinSingle');
+    const btn = document.getElementById('btnSingleSubmit');
+    spin.classList.remove('hidden');
+    btn.disabled = true;
+
+    try {
+      const fileInput = document.getElementById('singleFileInput');
+      const fileData = fileInput && fileInput.files[0] ? await readFileAsBase64(fileInput.files[0]) : null;
+
+      const payload = {
+        kategori: document.getElementById('singleKategori').value,
+        tanggal: document.getElementById('singleTanggal').value,
+        uraian: document.getElementById('singleUraian').value,
+        volume: document.getElementById('singleVolume').value,
+        lokasi: document.getElementById('singleLokasi').value,
+        fileData: fileData
+      };
+
+      const res = await callBackend('saveSingle', payload, 'saveSingleData');
+      
+      spin.classList.add('hidden');
+      btn.disabled = false;
+
+      if (res && res.success) {
+        alert(res.message || 'Data perbaikan berhasil disimpan!');
+        e.target.reset();
+        loadDataFromSheets();
+      } else {
+        alert('Gagal menyimpan data: ' + (res.error || 'Terjadi kesalahan pada server.'));
+      }
+    } catch (err) {
+      spin.classList.add('hidden');
+      btn.disabled = false;
+      alert('Error saat mengirim data: ' + err.message);
+    }
+  }
+
+  async function handleMultipleSubmit() {
+    const category = document.getElementById('multipleCategory').value;
+    const tbody = document.getElementById('multipleTableBody');
+    const rows = tbody.querySelectorAll('tr');
+    const items = [];
+
+    rows.forEach(tr => {
+      const tanggal = tr.querySelector('.row-tanggal')?.value;
+      const uraian = tr.querySelector('.row-uraian')?.value;
+      const volume = tr.querySelector('.row-volume')?.value;
+      const lokasi = tr.querySelector('.row-lokasi')?.value;
+      if (tanggal || uraian || volume || lokasi) {
+        items.push({ tanggal, uraian, volume, lokasi });
+      }
+    });
+
+    if (items.length === 0) {
+      alert('Mohon isi minimal satu baris data!');
+      return;
+    }
+
+    const spin = document.getElementById('spinMultiple');
+    const btn = document.getElementById('btnMultipleSubmit');
+    spin.classList.remove('hidden');
+    btn.disabled = true;
+
+    const res = await callBackend('saveMultiple', { category: category, items: items }, 'saveMultipleData');
+    spin.classList.add('hidden');
+    btn.disabled = false;
+
+    if (res && res.success) {
+      alert(res.message || `${items.length} data berhasil ditambahkan!`);
+      tbody.innerHTML = '';
+      addMultipleRow();
+      addMultipleRow();
+      loadDataFromSheets();
+    } else {
+      alert('Gagal menyimpan data: ' + (res.error || 'Terjadi kesalahan backend.'));
+    }
+  }
+
+  function downloadExcelTemplate() {
+    if (typeof XLSX !== 'undefined') {
+      const wsData = [
+        ['Tanggal', 'Uraian Perbaikan', 'Volume', 'Lokasi Kampus'],
+        ['2026-03-01', 'Perbaikan Kran Air Rusak', '2 Unit', 'Gedung Rektorat Lt 1'],
+        ['2026-03-02', 'Pembersihan Filter Water Treatment', '1 Unit', 'Masjid Ar-Raniry']
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data_Perbaikan');
+      XLSX.writeFile(wb, 'Template_InfraFix_UIN_ArRaniry.xlsx');
+    } else {
+      alert('Library SheetJS belum siap.');
+    }
+  }
+
+  function previewExcelFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        parsedExcelData = [];
+        const previewBody = document.getElementById('excelPreviewBody');
+        previewBody.innerHTML = '';
+
+        for (let i = 1; i < json.length; i++) {
+          const row = json[i];
+          if (row && row.length > 0 && (row[0] || row[1])) {
+            const item = {
+              tanggal: row[0] || '',
+              uraian: row[1] || '',
+              volume: row[2] || '',
+              lokasi: row[3] || ''
+            };
+            parsedExcelData.push(item);
+
+            const tr = document.createElement('tr');
+            tr.className = 'border-b hover:bg-gray-50';
+            tr.innerHTML = `
+              <td class="p-2 font-medium">${item.tanggal}</td>
+              <td class="p-2">${item.uraian}</td>
+              <td class="p-2 font-bold text-uin-green">${item.volume}</td>
+              <td class="p-2">${item.lokasi}</td>
+            `;
+            previewBody.appendChild(tr);
+          }
+        }
+
+        document.getElementById('excelRowCount').innerText = parsedExcelData.length;
+        document.getElementById('excelPreviewContainer').classList.remove('hidden');
+      } catch (err) {
+        alert('Gagal membaca file Excel: ' + err.message);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  async function handleExcelUploadSubmit() {
+    if (parsedExcelData.length === 0) {
+      alert('Tidak ada data Excel yang valid untuk diunggah!');
+      return;
+    }
+
+    const category = document.getElementById('excelCategory').value;
+    const spin = document.getElementById('spinExcel');
+    const btn = document.getElementById('btnExcelSubmit');
+    spin.classList.remove('hidden');
+    btn.disabled = true;
+
+    const res = await callBackend('saveExcel', { category: category, items: parsedExcelData }, 'saveExcelData');
+    spin.classList.add('hidden');
+    btn.disabled = false;
+
+    if (res && res.success) {
+      alert(res.message || 'Upload massal data Excel berhasil!');
+      parsedExcelData = [];
+      document.getElementById('excelFileInput').value = '';
+      document.getElementById('excelPreviewContainer').classList.add('hidden');
+      loadDataFromSheets();
+    } else {
+      alert('Gagal mengunggah data Excel: ' + (res.error || 'Terjadi kesalahan backend.'));
+    }
+  }
+
+  async function handleBulananSubmit(e) {
+    e.preventDefault();
+    const spin = document.getElementById('spinBulanan');
+    const btn = document.getElementById('btnBulananSubmit');
+    spin.classList.remove('hidden');
+    btn.disabled = true;
+
+    try {
+      const fileInput = document.getElementById('bulananFileInput');
+      const fileData = fileInput && fileInput.files[0] ? await readFileAsBase64(fileInput.files[0]) : null;
+
+      const payload = {
+        kategori: document.getElementById('bulananKategori').value,
+        tipePeriode: document.getElementById('tipePeriodeBulanan').value,
+        bulan: document.getElementById('bulananBulan').value,
+        bulanAkhir: document.getElementById('bulananBulanAkhir') ? document.getElementById('bulananBulanAkhir').value : '',
+        totalKasus: document.getElementById('bulananTotalKasus').value,
+        volumeTotal: document.getElementById('bulananVolumeTotal').value,
+        status: document.getElementById('bulananStatus').value,
+        fileData: fileData
+      };
+
+      const res = await callBackend('saveBulanan', payload, 'saveBulananData');
+      spin.classList.add('hidden');
+      btn.disabled = false;
+
+      if (res && res.success) {
+        alert(res.message || 'Laporan bulanan berhasil disimpan!');
+        e.target.reset();
+        loadDataFromSheets();
+      } else {
+        alert('Gagal menyimpan laporan bulanan: ' + (res.error || 'Terjadi kesalahan backend.'));
+      }
+    } catch (err) {
+      spin.classList.add('hidden');
+      btn.disabled = false;
+      alert('Error saat mengirim laporan bulanan: ' + err.message);
+    }
+  }
+
+  // Initial Fallback Data
+  const fallbackData = {
+    'air_bersih': {
+      riwayat: [
+        { tanggal: "2026-01-12", uraian: 'Perbaikan Kebocoran Pipa Utama HDPE 12" Perpustakaan', volume: "2 Titik", lokasi: "Gedung Perpustakaan Pusat", fileUrl: "" },
+        { tanggal: "2026-02-05", uraian: "Pemeliharaan Rutin Pompa Distribusi Sentrifugal", volume: "3 Unit", lokasi: "Stasiun Air Utama Kampus", fileUrl: "" }
+      ],
+      bulanan: [
+        { bulan: "Januari - Februari 2026", total: "14 Kasus", volume: "1,250 m3", status: "Optimal", fileUrl: "" }
+      ]
+    },
+    'air_kotor': {
+      riwayat: [
+        { tanggal: "2026-01-10", uraian: "Normalisasi Saluran Drainase Utama Blok Fakultas Tarbiyah", volume: "120 Meter", lokasi: "Fakultas Tarbiyah & Keguruan", fileUrl: "" }
+      ],
+      bulanan: [
+        { bulan: "Januari 2026", total: "8 Kasus", volume: "450 m3", status: "Optimal", fileUrl: "" }
+      ]
+    },
+    'listrik': {
+      riwayat: [
+        { tanggal: "2026-02-02", uraian: "Penggantian Insulator Gardu Utama Kampus 20kV", volume: "6 Unit", lokasi: "Gardu Induk Darussalam", fileUrl: "" }
+      ],
+      bulanan: [
+        { bulan: "Februari 2026", total: "5 Kasus", volume: "220 kW", status: "Optimal", fileUrl: "" }
+      ]
+    },
+    'kendaraan': {
+      riwayat: [
+        { tanggal: "2026-01-08", uraian: "Overhaul Mesin Bus Operasional Kampus BL-7012-AB", volume: "1 Unit", lokasi: "Garasi Sentral Sarpras", fileUrl: "" }
+      ],
+      bulanan: [
+        { bulan: "Januari 2026", total: "4 Kasus", volume: "4 Unit", status: "Optimal", fileUrl: "" }
+      ]
+    },
+    'fasilitas': {
+      riwayat: [
+        { tanggal: "2026-02-14", uraian: "Perbaikan AC Sentral & Sound System Auditorium Ali Hasjmy", volume: "4 Unit", lokasi: "Auditorium Prof. Ali Hasjmy", fileUrl: "" },
+        { tanggal: "2026-02-20", uraian: "Pengecatan & Perbaikan Plafon Ruang Kuliah FAH", volume: "2 Ruang", lokasi: "Fakultas Adab & Humaniora", fileUrl: "" }
+      ],
+      bulanan: [
+        { bulan: "Februari 2026", total: "9 Kasus", volume: "12 Unit", status: "Optimal", fileUrl: "" }
+      ]
+    }
+  };
+
+  async function loadDataFromSheets() {
+    const res = await callBackend('getData', { category: currentCategory }, 'getData');
+    
+    let riwayatData = [];
+    let bulananData = [];
+
+    if (res && res.success && res.riwayat && res.riwayat.length > 0) {
+      riwayatData = res.riwayat;
+      bulananData = res.bulanan || [];
+    } else {
+      const fb = fallbackData[currentCategory] || fallbackData['air_bersih'];
+      riwayatData = fb.riwayat;
+      bulananData = fb.bulanan;
+    }
+
+    renderRiwayatTable(riwayatData);
+    renderBulananTable(bulananData);
+  }
+
+  function renderRiwayatTable(dataList) {
+    const tbody = document.getElementById('table-riwayat-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (!dataList || dataList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400 italic">Belum ada data perbaikan untuk kategori ini.</td></tr>`;
+      return;
+    }
+
+    dataList.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50 transition-colors border-b border-gray-100';
+      
+      let linkHtml = `<span class="text-gray-400 italic text-[11px]">- Tidak ada file -</span>`;
+      if (item.fileUrl && item.fileUrl.trim() !== "" && item.fileUrl !== "#") {
+        linkHtml = `
+          <a href="${item.fileUrl}" target="_blank" class="inline-flex items-center gap-1 text-uin-green hover:text-uin-green-dark font-bold text-xs bg-uin-green/10 hover:bg-uin-green/20 px-2.5 py-1 rounded-md transition-all">
+            <span class="material-symbols-outlined text-[14px]">folder_open</span> Drive File
+          </a>
+        `;
+      }
+
+      tr.innerHTML = `
+        <td class="px-4 py-3 font-semibold text-gray-600">${item.tanggal || '-'}</td>
+        <td class="px-4 py-3 font-medium text-gray-800">${item.uraian || '-'}</td>
+        <td class="px-4 py-3 font-bold text-uin-green">${item.volume || '-'}</td>
+        <td class="px-4 py-3 text-gray-600">${item.lokasi || '-'}</td>
+        <td class="px-4 py-3 text-center">${linkHtml}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderBulananTable(dataList) {
+    const tbody = document.getElementById('table-bulanan-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (!dataList || dataList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400 italic">Belum ada rekap laporan bulanan untuk kategori ini.</td></tr>`;
+      return;
+    }
+
+    dataList.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50 transition-colors border-b border-gray-100';
+
+      let linkHtml = `<span class="text-gray-400 italic text-[11px]">- Tidak ada -</span>`;
+      if (item.fileUrl && item.fileUrl.trim() !== "" && item.fileUrl !== "#") {
+        linkHtml = `
+          <a href="${item.fileUrl}" target="_blank" class="inline-flex items-center gap-1 text-uin-green-dark font-bold text-xs bg-uin-gold-light hover:bg-uin-gold/40 px-2.5 py-1 rounded-md border border-uin-gold/40 transition-all">
+            <span class="material-symbols-outlined text-[14px]">attachment</span> Open Drive
+          </a>
+        `;
+      }
+
+      tr.innerHTML = `
+        <td class="px-4 py-3 font-bold text-gray-700">${item.bulan || '-'}</td>
+        <td class="px-4 py-3 font-semibold text-gray-800">${item.total || '-'}</td>
+        <td class="px-4 py-3 font-bold text-uin-green">${item.volume || '-'}</td>
+        <td class="px-4 py-3">
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-green-100 text-green-800 border border-green-300">
+            ${item.status || 'Optimal'}
+          </span>
+        </td>
+        <td class="px-4 py-3">${linkHtml}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Initial page startup
+  window.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById("settingGasUrl")) {
+      document.getElementById("settingGasUrl").value = GAS_WEB_APP_URL;
+    }
+    switchCategory('air_bersih');
+    addMultipleRow();
+    addMultipleRow();
+    fetchSiteSettings();
+  });
+
+  // Membaca pengaturan lokal ter-cache secara instan saat refresh
+  function loadLocalSettings() {
+    try {
+      const saved = localStorage.getItem("infrafix_site_settings");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        applySiteSettingsToDOM(parsed);
+      }
+    } catch (e) {
+      console.warn("Gagal membaca cache lokal settings:", e);
+    }
+  }
+
+  async function fetchSiteSettings() {
+    // 1. Tampilkan pengaturan ter-cache di browser secara instan tanpa jeda
+    loadLocalSettings();
+
+    // 2. Ambil data versi terbaru dari Server Google Apps Script
+    const res = await callBackend('getSettings', {}, 'getSiteSettings');
+    if (res && res.success && res.settings) {
+      localStorage.setItem("infrafix_site_settings", JSON.stringify(res.settings));
+      applySiteSettingsToDOM(res.settings);
+    }
+  }
+
+  function applySiteSettingsToDOM(st) {
+    if (!st) return;
+    siteSettings = Object.assign({}, siteSettings, st);
+
+    // 1. Hero background & Overlay
+    const heroBg = document.getElementById("heroHeaderBg");
+    const heroOverlay = document.getElementById("heroOverlay");
+
+    if (siteSettings.heroBgUrl && siteSettings.heroBgUrl.trim() !== "") {
+      heroBg.style.backgroundImage = `url('${siteSettings.heroBgUrl}')`;
+    } else {
+      heroBg.style.backgroundImage = "";
+    }
+
+    if (heroOverlay) {
+      const opacity = siteSettings.heroOpacity || "0.8";
+      heroOverlay.style.background = `rgba(0, 72, 37, ${opacity})`;
+    }
+
+    if (siteSettings.heroBadge) document.getElementById("heroBadgeText").innerText = siteSettings.heroBadge;
+
+    // 2. Top bar & Header
+    if (siteSettings.topBarArabic) document.getElementById("topBarArabic").innerText = siteSettings.topBarArabic;
+    if (siteSettings.topBarPhone) document.getElementById("topBarPhone").innerText = siteSettings.topBarPhone;
+    if (siteSettings.headerTitle) document.getElementById("headerBrandTitle").innerHTML = siteSettings.headerTitle;
+    if (siteSettings.headerSubTitle) document.getElementById("headerSubBrand").innerText = siteSettings.headerSubTitle;
+
+    // 3. Footer
+    if (siteSettings.footerTitle) document.getElementById("footerBrandTitle").innerText = siteSettings.footerTitle;
+    if (siteSettings.footerAddress) document.getElementById("footerAddressText").innerText = siteSettings.footerAddress;
+    if (siteSettings.footerCopyright) document.getElementById("footerCopyrightText").innerText = siteSettings.footerCopyright;
+  }
+
+  function loadSettingsToAdminForm() {
+    if (document.getElementById("settingGasUrl")) document.getElementById("settingGasUrl").value = GAS_WEB_APP_URL;
+    document.getElementById("settingHeroBgUrl").value = siteSettings.heroBgUrl || "";
+    document.getElementById("settingHeroBadge").value = siteSettings.heroBadge || "";
+    document.getElementById("settingHeroOpacity").value = siteSettings.heroOpacity || "0.8";
+
+    document.getElementById("settingTopBarArabic").value = siteSettings.topBarArabic || "";
+    document.getElementById("settingTopBarPhone").value = siteSettings.topBarPhone || "";
+    document.getElementById("settingHeaderTitle").value = siteSettings.headerTitle || "";
+    document.getElementById("settingHeaderSubTitle").value = siteSettings.headerSubTitle || "";
+
+    document.getElementById("settingFooterTitle").value = siteSettings.footerTitle || "";
+    document.getElementById("settingFooterAddress").value = siteSettings.footerAddress || "";
+    document.getElementById("settingFooterCopyright").value = siteSettings.footerCopyright || "";
+
+    previewHeroBgImage(siteSettings.heroBgUrl);
+  }
+
+  function previewHeroBgImage(url) {
+    const box = document.getElementById("heroBgPreviewBox");
+    const img = document.getElementById("imgHeroPreview");
+    if (url && url.trim() !== "") {
+      img.src = url;
+      box.classList.remove("hidden");
+    } else {
+      box.classList.add("hidden");
+    }
+  }
+
+  async function handleHeroFileSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const fileData = await readFileAsBase64(file);
+    if (fileData) {
+      document.getElementById("settingHeroBgUrl").value = fileData.base64;
+      previewHeroBgImage(fileData.base64);
+    }
+  }
+
+  function resetHeroBg() {
+    document.getElementById("settingHeroBgUrl").value = "";
+    document.getElementById("settingHeroBgFile").value = "";
+    previewHeroBgImage("");
+  }
+
+  async function handleSettingsSubmit(e) {
+    e.preventDefault();
+    const spin = document.getElementById("spinSettings");
+    const btn = document.getElementById("btnSettingsSubmit");
+
+    spin.classList.remove("hidden");
+    btn.disabled = true;
+
+    GAS_WEB_APP_URL = document.getElementById("settingGasUrl") ? document.getElementById("settingGasUrl").value.trim() : "";
+    if (GAS_WEB_APP_URL) {
+      localStorage.setItem("gas_app_url", GAS_WEB_APP_URL);
+    }
+
+    const newSettings = {
+      heroBgUrl: document.getElementById("settingHeroBgUrl").value,
+      heroBadge: document.getElementById("settingHeroBadge").value,
+      heroOpacity: document.getElementById("settingHeroOpacity").value,
+
+      topBarArabic: document.getElementById("settingTopBarArabic").value,
+      topBarPhone: document.getElementById("settingTopBarPhone").value,
+      headerTitle: document.getElementById("settingHeaderTitle").value,
+      headerSubTitle: document.getElementById("settingHeaderSubTitle").value,
+
+      footerTitle: document.getElementById("settingFooterTitle").value,
+      footerAddress: document.getElementById("settingFooterAddress").value,
+      footerCopyright: document.getElementById("settingFooterCopyright").value
+    };
+
+    // 1. Simpan langsung ke cache peramban lokal agar instan setelah di-refresh
+    localStorage.setItem("infrafix_site_settings", JSON.stringify(newSettings));
+    applySiteSettingsToDOM(newSettings);
+
+    // 2. Simpan permanen ke Google Script Properties server
+    const res = await callBackend('saveSettings', { settings: newSettings }, 'saveSiteSettings');
+    spin.classList.add("hidden");
+    btn.disabled = false;
+
+    if (res && res.success) {
+      if (res.settings) {
+        localStorage.setItem("infrafix_site_settings", JSON.stringify(res.settings));
+      }
+      alert("Pengaturan Tampilan Berhasil Disimpan Permanen di Server Google!");
+    } else {
+      alert("Pengaturan diterapkan di browser ini! (Status Server: " + (res.error || "Tersimpan secara lokal") + ")");
+    }
+  }
+</script>
+</body>
+</html>
